@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { addLead } from '@/app/actions';
 
 export function LeadForm() {
@@ -9,13 +9,13 @@ export function LeadForm() {
   const [success, setSuccess] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(false);
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
     const result = await addLead(formData);
 
     if (result.error) {
@@ -30,7 +30,7 @@ export function LeadForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       <h2 className="text-lg font-semibold text-gray-900">Add New Lead</h2>
 
       {error && (
